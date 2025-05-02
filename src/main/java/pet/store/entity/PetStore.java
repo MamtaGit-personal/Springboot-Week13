@@ -26,9 +26,11 @@ public class PetStore {
 	private Long petStoreId;
 	
 	private String petStoreName;
-	private String directions;
-	private String stateOrProvince;
-	private String country;
+	private String petStoreAddress;
+	private String petStoreCity;
+	private String petStoreState;
+	private String petStoreZip;
+	private String petStorePhone;
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
