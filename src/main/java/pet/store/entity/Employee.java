@@ -1,8 +1,5 @@
 package pet.store.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +27,7 @@ public class Employee {
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@ManyToOne (cascade = CascadeType.ALL ) //java field name, employee in the PetScore class
-	@JoinColumn(name = "pet_store_id")
+	@JoinColumn(name = "pet_store_id", nullable = false)
 	private PetStore petStore;
 
 }
