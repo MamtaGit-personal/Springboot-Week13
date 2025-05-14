@@ -31,7 +31,7 @@ public class GlobalControllerErrorHandler {
 	}
 	
 	/**************************************************************
-	*     Error Handler for NoSuchElementException  
+	*             NoSuchElementException Error Handler
 	*************************************************************/
 	@ExceptionHandler(NoSuchElementException.class)
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
@@ -39,6 +39,28 @@ public class GlobalControllerErrorHandler {
 			WebRequest webRequest)
 	{
 		return buildExceptionMessage(ex, HttpStatus.NOT_FOUND, webRequest, LogStatus.MESSAGE_ONLY);
+	}
+	
+	/**************************************************************
+	*             UnsupportedOperationException Error Handler
+	*************************************************************/
+	@ExceptionHandler(UnsupportedOperationException.class)
+	@ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
+	public ExceptionMessage handleUnsupportedOperationException(UnsupportedOperationException ex,
+			WebRequest webRequest)
+	{
+		return buildExceptionMessage(ex, HttpStatus.METHOD_NOT_ALLOWED, webRequest, LogStatus.MESSAGE_ONLY);
+	}
+	
+	/****************************************************************
+	 *              NullPointerException Error Handler
+	****************************************************************/
+	@ExceptionHandler(NullPointerException.class)
+	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+	public ExceptionMessage handleNullPointerException(NullPointerException ex,
+			WebRequest webRequest)
+	{
+		return buildExceptionMessage(ex, HttpStatus.INTERNAL_SERVER_ERROR, webRequest, LogStatus.MESSAGE_ONLY);
 	}
 	
 	/**************************************************************

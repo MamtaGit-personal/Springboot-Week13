@@ -1,5 +1,7 @@
 package pet.store.service;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -8,13 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pet.store.controller.model.PetStoreData;
+import pet.store.controller.model.PetStoreData.PetStoreEmployee;
 import pet.store.dao.PetStoreDao;
+import pet.store.entity.Employee;
 import pet.store.entity.PetStore;
 
 @Service
 public class PetStoreService {
 	@Autowired
 	private PetStoreDao petStoreDao;
+	
+	@Autowired
+	private PetStoreDao employeeDao; // added on Week 15
 	
 	/******************************************************************
 	 * savePetStore() method, 
@@ -92,5 +99,77 @@ public class PetStoreService {
 			"PetStore with ID=" + petStoreId + " was NOT found.") );
 	}
 	
+	/********************************************************************
+	 *     Retrieve all the rows from petStore table.
+	 ********************************************************************/
+	
+	@Transactional(readOnly = true)
+	public List<PetStoreData> retrieveAllPetStores() {
+		List<PetStore> petStores = petStoreDao.findAll();
+		List<PetStoreData> response = new LinkedList<>();
+		
+		for(PetStore petStore : petStores) {
+			response.add(new PetStoreData(petStore));
+		}
+		
+		return response;
+	/*	
+		// @formatter:off
+		return petStoreDao.findAll()
+				.stream()
+				.map(PetStoreData::new)
+				.toList();
+		// @formatter:on
+	*/
+	}
+	
+	/********************************************************************
+	 *        Retrieve petStore for a given petStoreId
+	 ********************************************************************/
+	@Transactional(readOnly = true)
+	public PetStoreData retrievePetStoreById(Long petStoreId) {
+		PetStore petStore = findPetStoreById(petStoreId);
+		PetStoreData petStoreData = new PetStoreData(petStore);
+		return petStoreData;
+	}
+	
+	/********************************************************************
+	 *        Delete petStore for a given petStoreId
+	 ********************************************************************/
+	@Transactional(readOnly = false)
+	public void deletePetStoreById(Long petStoreId) {
+		PetStore petStore = findPetStoreById(petStoreId);
+		petStoreDao.delete(petStore);
+				
+	}
+	
+	
+	/*******************************************************************************************************/
+	/*******************************************************************************************************/
+	@Transactional(readOnly = false)
+	public PetStoreEmployee saveEmployee(Long petStoreId, PetStoreEmployee petStoreEmployee) {
+		PetStore petStore = findPetStoreById(petStoreId);
+		Long employeeId = petStoreEmployee.getEmployeeId();
+		Employee employee = findOrCreateEmployee(petStoreId, employeeId);
+		
+		copyEmployeeToEmployeeTableFromPetStoreEmployee(employee, petStoreEmployee);
+		employee.setPetStore(petStore);
+		petStore.getEmployees().add(employee);
+		
+		Employee daoEmployee = employeeDao.save(employee);
+		return new PetStoreEmployee(daoEmployee); //return new PetStoreData(petStoreDao.save(petStore));
+	}
+
+	private void copyEmployeeToEmployeeTableFromPetStoreEmployee(Employee employee, PetStoreEmployee petStoreEmployee) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private Employee findOrCreateEmployee(Long petStoreId, Long employeeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/*******************************************************************/
 	
 }

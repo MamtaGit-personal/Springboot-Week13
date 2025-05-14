@@ -1,7 +1,12 @@
 package pet.store.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 import pet.store.controller.model.PetStoreData;
+import pet.store.controller.model.PetStoreData.PetStoreEmployee;
 import pet.store.service.PetStoreService;
 
 @RestController
@@ -47,10 +53,57 @@ public class PetStoreController {
 	}
 	
 	/**************************************************************************
-	 *                     Delete a pet_store
+	 *                     Delete all pet_stores
     **************************************************************************/
+	@DeleteMapping("/pet_store")
+	public void deleteAllPetStores() {
+		log.info("Attempting to delete all petStores.");
+		throw new UnsupportedOperationException("Deleting all PetStores in NOT allowed.");
+	}
 	
 	/**************************************************************************
-	 *                       Retrieve pet_stores
+	 *                     Delete a pet_store for a given petStoreId
     **************************************************************************/
+	@DeleteMapping("/pet_store/{petStoreId}")
+	public Map<String, String> deletePetStoreById(@PathVariable Long petStoreId) {
+		log.info("Deleting a petStore with ID={}", petStoreId);
+		petStoreService.deletePetStoreById(petStoreId);
+		
+		return Map.of("message", "Deletion of petStore with ID=" + petStoreId + " was successful.");
+	}
+	
+	/**************************************************************************
+	 *                       Retrieve all petStores
+    **************************************************************************/
+	@GetMapping("/pet_store")
+	public List<PetStoreData> retrieveAllPetStores() {
+		log.info("Retrieving all the Pet Stores data.");
+		return petStoreService.retrieveAllPetStores();
+	}
+	
+	/**************************************************************************
+	 *                   Retrieve a petStore by petStoreId
+    **************************************************************************/
+	@GetMapping("/pet_store/{petStoreId}")
+	public PetStoreData retrievePetStoreById(@PathVariable Long petStoreId) {
+		log.info("Retrieving Pet Store data for a given ID {}", petStoreId);
+		return petStoreService.retrievePetStoreById(petStoreId);
+	}
+	
+	/*******************************************************************************************************/
+	/*******************************************************************************************************/
+	/**************************************************************************
+	 *                Create a pet_store employee. All the fields of employee 
+	 *                is provided by the user
+    **************************************************************************/
+	@PostMapping("/pet_store/{petStoreId}/employee") //resource name
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public PetStoreEmployee insertEmployeeDataInPetStore(@PathVariable Long petStoreId,
+			@RequestBody PetStoreEmployee petStoreEmployee) 
+	{
+		log.info("Creating and then saving Employee data with ID={}", petStoreEmployee, petStoreId);
+		return petStoreService.saveEmployee(petStoreId, petStoreEmployee);
+	}
+	
+	
 }

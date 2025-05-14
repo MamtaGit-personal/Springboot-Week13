@@ -35,18 +35,55 @@ public class PetStoreData {
 		petStoreZip = petStore.getPetStoreZip();
 		petStorePhone = petStore.getPetStorePhone();
 		
-		
-		// Need to work on employee and customer
 		for(Customer customer: petStore.getCustomers()) 
 		{
-			customers.add(new PetStoreCustomer(customer));
+			this.customers.add(new PetStoreCustomer(customer));
 		}
 		
 		for(Employee employee : petStore.getEmployees()) 
 		{
-			employees.add(new PetStoreEmployee(employee));
+			this.employees.add(new PetStoreEmployee(employee));
 		} 
 		
 	} //PetStoreData(PetPark petPark)
+	
+	@Data
+	@NoArgsConstructor
+	public class PetStoreCustomer {
+		
+		private Long customerId;
+		private String customerFirstName;
+		private String customerLastName;
+		private String customerEmail;
+		
+		public PetStoreCustomer(Customer customer)
+		{
+			this.customerId = customer.getCustomerId();
+			this.customerFirstName = customer.getCustomerFirstName();
+			this.customerLastName = customer.getCustomerLastName();
+			this.customerEmail = customer.getCustomerEmail();
+					
+		} //PetStoreCustomer(PetPark petPark)
+	}
+	
+	@Data
+	@NoArgsConstructor
+	public class PetStoreEmployee {
+		private Long employeeId;
+		
+		private String employeeFirstName;
+		private String employeeLastName;
+		private String employeePhone;
+		private String employeeJobTitle;
+		
+		public PetStoreEmployee(Employee employee){
+			
+			this.employeeId = employee.getEmployeeId();
+			this.employeeFirstName = employee.getEmployeeFirstName();
+			this.employeeLastName = employee.getEmployeeLastName();
+			this.employeePhone = employee.getEmployeePhone();
+			this.employeeJobTitle = employee.getEmployeeJobTitle();
+		}
+	}
 
 }
