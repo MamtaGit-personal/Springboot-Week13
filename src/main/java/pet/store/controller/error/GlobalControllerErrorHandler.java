@@ -52,6 +52,17 @@ public class GlobalControllerErrorHandler {
 		return buildExceptionMessage(ex, HttpStatus.METHOD_NOT_ALLOWED, webRequest, LogStatus.MESSAGE_ONLY);
 	}
 	
+	/**************************************************************
+	*             IllegalArgumentException Error Handler
+	*************************************************************/
+	@ExceptionHandler(IllegalArgumentException.class)
+	@ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
+	public ExceptionMessage handleIllegalArgumentException(IllegalArgumentException ex,
+			WebRequest webRequest)
+	{
+		return buildExceptionMessage(ex, HttpStatus.NOT_ACCEPTABLE, webRequest, LogStatus.MESSAGE_ONLY);
+	}
+	
 	/****************************************************************
 	 *              NullPointerException Error Handler
 	****************************************************************/

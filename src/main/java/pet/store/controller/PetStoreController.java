@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 import pet.store.controller.model.PetStoreData;
+import pet.store.controller.model.PetStoreData.PetStoreCustomer;
 import pet.store.controller.model.PetStoreData.PetStoreEmployee;
 import pet.store.service.PetStoreService;
 
@@ -34,7 +35,7 @@ public class PetStoreController {
     **************************************************************************/
 	@PostMapping("/pet_store") //resource name
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public PetStoreData insertPetStoreData(@RequestBody PetStoreData petStoreData) 
+	public PetStoreData createPetStore(@RequestBody PetStoreData petStoreData) 
 	{
 		log.info("Creating and then saving Pet Store data {}", petStoreData);
 		return petStoreService.savePetStore(petStoreData);
@@ -90,20 +91,32 @@ public class PetStoreController {
 		return petStoreService.retrievePetStoreById(petStoreId);
 	}
 	
-	/*******************************************************************************************************/
-	/*******************************************************************************************************/
 	/**************************************************************************
-	 *                Create a pet_store employee. All the fields of employee 
-	 *                is provided by the user
+	 *                  Week 15 work
     **************************************************************************/
-	@PostMapping("/pet_store/{petStoreId}/employee") //resource name
+	/************************************************************************
+	 *             Create a pet_store employee. All the fields of employee 
+	 *             is provided by the user
+    *************************************************************************/
+	@PostMapping("/pet_store/{petStoreId}/employee")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public PetStoreEmployee insertEmployeeDataInPetStore(@PathVariable Long petStoreId,
-			@RequestBody PetStoreEmployee petStoreEmployee) 
-	{
+	public PetStoreEmployee createEmployeeData(@PathVariable Long petStoreId,
+			@RequestBody PetStoreEmployee petStoreEmployee) {
 		log.info("Creating and then saving Employee data with ID={}", petStoreEmployee, petStoreId);
+		
 		return petStoreService.saveEmployee(petStoreId, petStoreEmployee);
 	}
-	
-	
+		
+	/**************************************************************************
+	 *             Create a pet_store customer. All the fields of customer 
+	 *             is provided by the user
+    **************************************************************************/
+	@PostMapping("/pet_store/{petStoreId}/customer") 
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public PetStoreCustomer createCustomer(@PathVariable Long petStoreId,
+			@RequestBody PetStoreCustomer petStoreCustomer) {
+		
+		log.info("Creating and then saving Customer data with ID={}", petStoreCustomer, petStoreId);
+		return petStoreService.saveCustomer(petStoreId, petStoreCustomer);
+	}
 }

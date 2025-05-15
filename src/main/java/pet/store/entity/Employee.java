@@ -27,7 +27,8 @@ public class Employee {
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@ManyToOne (cascade = CascadeType.ALL ) //java field name, employee in the PetScore class
-	@JoinColumn(name = "pet_store_id", nullable = false)
+	//@JoinColumn(name = "pet_store_id", nullable = false)
+	@JoinColumn(name = "pet_store_id")
 	private PetStore petStore;
 
 }

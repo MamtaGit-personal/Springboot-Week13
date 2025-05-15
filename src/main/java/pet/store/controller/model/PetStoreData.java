@@ -49,28 +49,9 @@ public class PetStoreData {
 	
 	@Data
 	@NoArgsConstructor
-	public class PetStoreCustomer {
+	public static class PetStoreEmployee {
 		
-		private Long customerId;
-		private String customerFirstName;
-		private String customerLastName;
-		private String customerEmail;
-		
-		public PetStoreCustomer(Customer customer)
-		{
-			this.customerId = customer.getCustomerId();
-			this.customerFirstName = customer.getCustomerFirstName();
-			this.customerLastName = customer.getCustomerLastName();
-			this.customerEmail = customer.getCustomerEmail();
-					
-		} //PetStoreCustomer(PetPark petPark)
-	}
-	
-	@Data
-	@NoArgsConstructor
-	public class PetStoreEmployee {
 		private Long employeeId;
-		
 		private String employeeFirstName;
 		private String employeeLastName;
 		private String employeePhone;
@@ -85,5 +66,24 @@ public class PetStoreData {
 			this.employeeJobTitle = employee.getEmployeeJobTitle();
 		}
 	}
-
+	
+	@Data
+	@NoArgsConstructor
+	public static class PetStoreCustomer {
+		
+		private Long customerId;
+		private String customerFirstName;
+		private String customerLastName;
+		private String customerEmail;
+		
+		public PetStoreCustomer(Customer customer)
+		{
+			this.customerId = customer.getCustomerId();
+			this.customerFirstName = customer.getCustomerFirstName();
+			this.customerLastName = customer.getCustomerLastName();
+			this.customerEmail = customer.getCustomerEmail();
+					
+		}
+	}
+	
 }
