@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
 import pet.store.controller.model.PetStoreData;
 import pet.store.controller.model.PetStoreData.PetStoreCustomer;
 import pet.store.controller.model.PetStoreData.PetStoreEmployee;
@@ -20,6 +21,7 @@ import pet.store.entity.Customer;
 import pet.store.entity.Employee;
 import pet.store.entity.PetStore;
 
+@Slf4j
 @Service
 public class PetStoreService {
 	@Autowired
@@ -55,6 +57,7 @@ public class PetStoreService {
 		Long petStoreId = petStoreData.getPetStoreId();
 		PetStore petStore = findOrCreatePetStore(petStoreId);
 		setFieldsInPetStore(petStore, petStoreData);
+		
 		return new PetStoreData(petStoreDao.save(petStore));
 	}
 	
@@ -70,6 +73,7 @@ public class PetStoreService {
 	 * ***************************************************************/
 	private PetStore findOrCreatePetStore(Long petStoreId) {
 		PetStore petStore;
+		
 		if(Objects.isNull(petStoreId)) {
 			petStore = new PetStore();
 		}
@@ -85,6 +89,7 @@ public class PetStoreService {
 	 * petStoreData to petStore's respective fields
 	 *******************************************************************/
 	private void setFieldsInPetStore(PetStore petStore, PetStoreData petStoreData) {
+		
 		petStore.setPetStoreName(petStoreData.getPetStoreName());
 		petStore.setPetStoreAddress(petStoreData.getPetStoreAddress());
 		petStore.setPetStoreCity(petStoreData.getPetStoreCity());
@@ -102,14 +107,15 @@ public class PetStoreService {
 	 * error handling package.
 	 ********************************************************************/
 	private PetStore findPetStoreById(Long petStoreId) {
-		
+				
+		log.info("The petStoreId in findPetStoreById = {}", petStoreId);  // 05/16
 		return petStoreDao.findById(petStoreId)
 			.orElseThrow( () -> new NoSuchElementException(
 			"PetStore with ID=" + petStoreId + " was NOT found.") );
 	}
 	
 	/****************************************************************************/
-	/************************        Week 15 below      ******************************/
+	/************************        Week 15 below      *************************/
 	/****************************************************************************/
 		
 	/********************************************************************
@@ -122,7 +128,12 @@ public class PetStoreService {
 		List<PetStoreData> result = new LinkedList<>();
 		
 		for(PetStore petStore : petStores) {
-			result.add(new PetStoreData(petStore));
+			PetStoreData psd = new PetStoreData(petStore);
+			
+			psd.getCustomers().clear();
+			psd.getEmployees().clear();
+			
+			result.add(psd);
 		}
 		
 		return result;
